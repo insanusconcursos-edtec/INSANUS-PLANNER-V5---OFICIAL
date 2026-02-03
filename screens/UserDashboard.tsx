@@ -280,6 +280,9 @@ const generateSchedule = (
 
         const dayName = getDayName(dateStr);
         let availableMin = routine.days[dayName] || 0;
+      if (advanceMode && dateStr === getTodayStr() && availableMin <= 0) {
+    availableMin = 60; // Ou o tempo que você considerar um "bloco" de antecipação (ex: 60 ou 120 min)
+}
         
         if (advanceMode && dateStr === getTodayStr()) {
              const usedRealMin = Math.floor(dailySessionSeconds / 60);
@@ -335,7 +338,7 @@ const generateSchedule = (
                     let cursor = disciplineCursor[disciplineId];
                     
                     let subjectsProcessed = 0;
-                    const maxSubjects = (advanceMode && dateStr === getTodayStr()) ? 999 : (item.subjectsCount || 1);
+                    const maxSubjects = item.subjectsCount || 1;
                     let currentSubjectId = cursor < tasks.length ? tasks[cursor].subjectId : null;
                     
                     if (cursor >= tasks.length) {
